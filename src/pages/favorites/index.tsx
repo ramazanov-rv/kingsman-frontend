@@ -2,6 +2,9 @@ import { Box, Fade, Typography } from "@mui/material";
 import { ProductCard } from "../../components/atoms/ProductCard";
 import { useFavorites } from "../../contexts/FavoritesContext";
 import { isMobileWebApp } from "../../utils";
+import { useTelegram } from "../../hooks/useTelegram";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // This is a temporary mock data, you should replace it with your actual data source
 const mockProducts = [
@@ -29,10 +32,23 @@ const mockProducts = [
 ];
 
 export function FavoritesPage() {
+    const {tg} = useTelegram()
+  const navigate = useNavigate();
   const { favorites } = useFavorites();
   const favoriteProducts = mockProducts.filter((product) =>
     favorites.includes(product.id)
   );
+
+  useEffect(() => {
+    tg.BackButton.show();
+    tg.BackButton.onClick(() => {
+      navigate("/catalog");
+    });
+
+    return () => {
+      tg.BackButton.hide();
+    };
+  }, []);
 
   return (
     <Fade in timeout={400}>

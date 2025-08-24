@@ -11,7 +11,8 @@ export function Layout() {
   useEffect(() => {
     tg.ready();
     tg.expand();
-
+    tg.disableVerticalSwipes();
+    
     if (isMobileWebApp) {
       try {
         tg.requestFullscreen();
