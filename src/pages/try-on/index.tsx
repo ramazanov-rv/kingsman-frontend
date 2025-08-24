@@ -1,10 +1,14 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { telegramVibrate } from "../../utils";
+import { useTelegram } from "../../hooks/useTelegram";
 
 export const TryOnPage = () => {
   const { id } = useParams();
+  const { tg } = useTelegram();
+  const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -20,10 +24,10 @@ export const TryOnPage = () => {
   };
 
   const handleTryOn = async () => {
+    telegramVibrate("light");
     if (!selectedImage || !id) return;
 
     try {
-      // Here will be the API call to your server
       const response = await fetch("YOUR_API_ENDPOINT", {
         method: "POST",
         headers: {
@@ -46,6 +50,14 @@ export const TryOnPage = () => {
       console.error("Error processing image:", error);
     }
   };
+
+  useEffect(() => {
+    tg.BackButton.show();
+    tg.BackButton.onClick(() => {
+      telegramVibrate("light");
+      navigate("/catalog");
+    });
+  }, []);
 
   return (
     <Container maxWidth="sm" sx={{ py: 4, pb: 18 }}>

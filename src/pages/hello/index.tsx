@@ -1,12 +1,14 @@
 import { Box, Button, Divider, Fade, Typography } from "@mui/material";
 import { useTelegram } from "../../hooks/useTelegram";
 import { useNavigate } from "react-router-dom";
+import { telegramVibrate } from "../../utils";
 
 export function HelloPage() {
   const { platform } = useTelegram();
   const navigate = useNavigate();
 
   const handleClick = () => {
+    telegramVibrate("light");
     navigate("/catalog");
   };
 

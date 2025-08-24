@@ -1,7 +1,7 @@
 import { Box, Fade, Typography } from "@mui/material";
 import { ProductCard } from "../../components/atoms/ProductCard";
 import { useFavorites } from "../../contexts/FavoritesContext";
-import { isMobileWebApp } from "../../utils";
+import { isMobileWebApp, telegramVibrate } from "../../utils";
 import { useTelegram } from "../../hooks/useTelegram";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +42,7 @@ export function FavoritesPage() {
   useEffect(() => {
     tg.BackButton.show();
     tg.BackButton.onClick(() => {
+      telegramVibrate("light");
       navigate("/catalog");
     });
 

@@ -12,7 +12,7 @@ export const sampleProducts = [
     discount: {
       type: "percent",
       value: 20,
-      label: "Зимняя распродажа"
+      label: "Зимняя распродажа",
     },
     sizes: ["XS", "S", "M", "L", "XL"],
     availableSizes: ["S", "M", "L"],
@@ -26,7 +26,7 @@ export const sampleProducts = [
     discount: {
       type: "percent",
       value: 25,
-      label: "Весенняя коллекция"
+      label: "Весенняя коллекция",
     },
     sizes: ["XS", "S", "M", "L", "XL"],
     availableSizes: ["XS", "S", "M"],
@@ -49,7 +49,7 @@ export const sampleProducts = [
     discount: {
       type: "percent",
       value: 20,
-      label: "Зимняя распродажа"
+      label: "Зимняя распродажа",
     },
     sizes: ["XS", "S", "M", "L", "XL"],
     availableSizes: ["S", "M", "L"],
@@ -63,7 +63,7 @@ export const sampleProducts = [
     discount: {
       type: "percent",
       value: 25,
-      label: "Весенняя коллекция"
+      label: "Весенняя коллекция",
     },
     sizes: ["XS", "S", "M", "L", "XL"],
     availableSizes: ["XS", "S", "M"],
@@ -86,7 +86,7 @@ export const sampleProducts = [
     discount: {
       type: "percent",
       value: 20,
-      label: "Зимняя распродажа"
+      label: "Зимняя распродажа",
     },
     sizes: ["XS", "S", "M", "L", "XL"],
     availableSizes: ["S", "M", "L"],
@@ -100,7 +100,7 @@ export const sampleProducts = [
     discount: {
       type: "percent",
       value: 25,
-      label: "Весенняя коллекция"
+      label: "Весенняя коллекция",
     },
     sizes: ["XS", "S", "M", "L", "XL"],
     availableSizes: ["XS", "S", "M"],
@@ -123,7 +123,7 @@ export const sampleProducts = [
     discount: {
       type: "percent",
       value: 20,
-      label: "Зимняя распродажа"
+      label: "Зимняя распродажа",
     },
     sizes: ["XS", "S", "M", "L", "XL"],
     availableSizes: ["S", "M", "L"],
@@ -137,7 +137,7 @@ export const sampleProducts = [
     discount: {
       type: "percent",
       value: 25,
-      label: "Весенняя коллекция"
+      label: "Весенняя коллекция",
     },
     sizes: ["XS", "S", "M", "L", "XL"],
     availableSizes: ["XS", "S", "M"],

@@ -9,3 +9,11 @@ export const isMobileWebApp =
   Telegram.WebApp.platform !== "macos" &&
   Telegram.WebApp.platform !== "webk" &&
   !Telegram.WebApp.platform.startsWith("web");
+
+export function telegramVibrate(
+  type: "light" | "medium" | "heavy" | "soft" | "rigid"
+) {
+  if (isWebApp) {
+    Telegram.WebApp.HapticFeedback.impactOccurred(type);
+  }
+}

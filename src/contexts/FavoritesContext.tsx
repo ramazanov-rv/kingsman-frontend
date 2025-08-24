@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { useTelegram } from '../hooks/useTelegram';
 
 interface FavoritesContextType {
   favorites: string[];
@@ -13,6 +14,7 @@ interface FavoritesProviderProps {
 }
 
 export function FavoritesProvider({ children }: FavoritesProviderProps) {
+  const { tg } = useTelegram();
   const [favorites, setFavorites] = useState<string[]>(() => {
     const savedFavorites = localStorage.getItem('favorites');
     return savedFavorites ? JSON.parse(savedFavorites) : [];
@@ -20,14 +22,25 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
 
   const toggleFavorite = useCallback((id: string) => {
     setFavorites((prev) => {
-      const newFavorites = prev.includes(id)
-        ? prev.filter((favId) => favId !== id)
-        : [...prev, id];
+      const isAdding = !prev.includes(id);
+      const newFavorites = isAdding
+        ? [...prev, id]
+        : prev.filter((favId) => favId !== id);
       
       localStorage.setItem('favorites', JSON.stringify(newFavorites));
+
+      // Show notification
+      if (isAdding) {
+        try {
+          tg.showAlert("Товар добавлен в избранное");
+        } catch (error) {
+          console.warn('Could not show Telegram alert:', error);
+        }
+      }
+
       return newFavorites;
     });
-  }, []);
+  }, [tg]);
 
   const isFavorite = useCallback((id: string) => {
     return favorites.includes(id);

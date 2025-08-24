@@ -17,7 +17,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { sampleProducts } from "./index";
 import { useEffect, useState } from "react";
 import { useTelegram } from "../../hooks/useTelegram";
-import { isMobileWebApp } from "../../utils";
+import { isMobileWebApp, telegramVibrate } from "../../utils";
 
 const pulse = keyframes`
   0% {
@@ -56,6 +56,7 @@ export function ProductPage() {
   useEffect(() => {
     tg.BackButton.show();
     tg.BackButton.onClick(() => {
+      telegramVibrate("light");
       navigate("/catalog");
     });
 
@@ -71,7 +72,10 @@ export function ProductPage() {
           Товар не найден
         </Typography>
         <Button
-          onClick={() => navigate("/catalog")}
+          onClick={() => {
+            telegramVibrate("light");
+            navigate("/catalog");
+          }}
           startIcon={<ArrowBackIcon />}
           sx={{ mt: 2 }}
         >
@@ -213,9 +217,10 @@ export function ProductPage() {
                   return (
                     <Box
                       key={size}
-                      onClick={() =>
-                        isAvailable && setSelectedSize(isSelected ? null : size)
-                      }
+                      onClick={() => {
+                        telegramVibrate("light")
+                        isAvailable && setSelectedSize(isSelected ? null : size);
+                      }}
                       sx={{
                         width: 36,
                         height: 36,
@@ -353,6 +358,7 @@ export function ProductPage() {
                   disabled={!selectedSize}
                   onClick={() => {
                     if (selectedSize) {
+                      telegramVibrate("light");
                       alert(
                         `Товар ${product.title} размера ${selectedSize} добавлен в корзину`
                       );
@@ -381,6 +387,7 @@ export function ProductPage() {
                   variant="contained"
                   fullWidth
                   onClick={() => {
+                    telegramVibrate("light");
                     navigate(`/catalog/${id}/try-on`);
                   }}
                   startIcon={<SmartToyIcon />}
