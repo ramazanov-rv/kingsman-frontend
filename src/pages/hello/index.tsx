@@ -12,7 +12,7 @@ export function HelloPage() {
 
   useEffect(() => {
     const logoTimer = setTimeout(() => setShowLogo(true), 300);
-    const buttonTimer = setTimeout(() => setShowButton(true), 1000);
+    const buttonTimer = setTimeout(() => setShowButton(true), 700);
 
     return () => {
       clearTimeout(logoTimer);
@@ -50,7 +50,7 @@ export function HelloPage() {
             src="/logo-white.png"
             component={"img"}
             sx={{
-              height: "150px",
+              height: "125px",
               margin: "0 auto",
               opacity: showLogo ? 1 : 0,
               transition: "opacity 0.4s ease-in-out",

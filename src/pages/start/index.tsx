@@ -11,8 +11,8 @@ export function StartPage() {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    const contentTimer = setTimeout(() => setShowContent(true), 300);
-    const buttonTimer = setTimeout(() => setShowButton(true), 1000);
+    const contentTimer = setTimeout(() => setShowContent(true), 400);
+    const buttonTimer = setTimeout(() => setShowButton(true), 700);
 
     return () => {
       clearTimeout(contentTimer);
