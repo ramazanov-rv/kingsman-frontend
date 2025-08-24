@@ -81,6 +81,7 @@ export function Navigation() {
       {/* Blur layer */}
       <Box
         sx={{
+          width: "100%",
           position: "fixed",
           bottom: 0,
           left: 0,
@@ -96,6 +97,7 @@ export function Navigation() {
       <Box
         component="nav"
         sx={{
+          width: "100%",
           position: "fixed",
           bottom: 0,
           left: 0,
@@ -127,7 +129,7 @@ export function Navigation() {
           alignItems: "center",
           px: 2,
           pb: "calc(var(--tg-safe-area-inset-bottom) + 10px)",
-          pt: 4,
+          pt: 2,
           background: "transparent",
           transition: "transform 0.3s ease-in-out",
         }}
@@ -145,7 +147,7 @@ export function Navigation() {
               padding: "8px",
               minWidth: "64px",
               height: "58px",
-              borderRadius: "14px",
+              borderRadius: "18px",
               transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
               position: "relative",
               overflow: "visible",
@@ -201,6 +203,7 @@ export function Navigation() {
                 willChange: "transform",
                 opacity: 1,
                 pt: 0.5,
+                borderRadius: "18px",
               }}
             >
               {link.icon}

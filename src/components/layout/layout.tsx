@@ -8,11 +8,16 @@ import { Navigation } from "./Navigation";
 export function Layout() {
   const { tg } = useTelegram();
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   useEffect(() => {
     tg.ready();
     tg.expand();
     tg.disableVerticalSwipes();
-    
+
     if (isMobileWebApp) {
       try {
         tg.requestFullscreen();

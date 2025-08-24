@@ -20,6 +20,11 @@ interface ProductCardProps {
   title: string;
   description: string;
   price: number;
+  discount?: {
+    type: string;
+    value: number;
+    label: string;
+  };
 }
 
 export function ProductCard({
@@ -28,6 +33,7 @@ export function ProductCard({
   title,
   description,
   price,
+  discount,
 }: ProductCardProps) {
   const navigate = useNavigate();
   const { toggleFavorite, isFavorite } = useFavorites();
@@ -49,6 +55,25 @@ export function ProductCard({
       }}
     >
       <Box sx={{ position: "relative" }}>
+        {discount && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 8,
+              left: 8,
+              zIndex: 1,
+              backgroundColor: '#FF4081',
+              color: '#fff',
+              py: 0.5,
+              px: 1,
+              borderRadius: 1,
+              fontSize: 14,
+              fontWeight: 600,
+            }}
+          >
+            -{discount.value}%
+          </Box>
+        )}
         <CardMedia
           component="img"
           image={image}
@@ -118,19 +143,60 @@ export function ProductCard({
             gap: 2,
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{
-              fontSize: 20,
-              fontWeight: 700,
-              color: "primary.main",
-            }}
-          >
-            {price.toLocaleString()} ₽
-          </Typography>
+          {discount ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
+              <Typography
+                sx={{
+                  fontSize: 20,
+                  fontWeight: 700,
+                  color: "primary.main",
+                  order: 1,
+                }}
+              >
+                {Math.round(price * (1 - discount.value / 100)).toLocaleString()} ₽
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: 16,
+                  fontWeight: 500,
+                  color: "primary.main",
+                  opacity: 0.5,
+                  textDecoration: 'line-through',
+                  order: 2,
+                }}
+              >
+                {price.toLocaleString()} ₽
+              </Typography>
+              <Box
+                sx={{
+                  backgroundColor: '#FF4081',
+                  color: '#fff',
+                  py: 0.5,
+                  px: 1,
+                  borderRadius: 1,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  order: 3,
+                }}
+              >
+                -{discount.value}%
+              </Box>
+            </Box>
+          ) : (
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: "primary.main",
+              }}
+            >
+              {price.toLocaleString()} ₽
+            </Typography>
+          )}
           <Button
             variant="contained"
-            onClick={() => navigate(`/product/${id}`)}
+            onClick={() => navigate(`/catalog/${id}`)}
             fullWidth
             sx={{
               borderRadius: 2,
