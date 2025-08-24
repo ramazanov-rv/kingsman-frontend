@@ -118,7 +118,7 @@ export function ProductPage() {
   const imageUrls = images?.data && Array.isArray(images.data) && images.data.length > 0
     ? images.data.map(img => {
         const url = img?.attributes?.url;
-        return url ? `http://5.129.196.187${url}` : defaultImage;
+        return url ? `https://kingsman-tryon.ru${url}` : defaultImage;
       })
     : [defaultImage];
 

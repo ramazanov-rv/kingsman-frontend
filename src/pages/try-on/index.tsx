@@ -32,7 +32,7 @@ export const TryOnPage = () => {
       formData.append('prompt', 'Определи какая одежда на фото и надень на меня эту одежду.');
 
       const response = await axios.post(
-        'http://5.129.196.187/api/clothes/try-on-with-clothes-id',
+        'https://kingsman-tryon.ru/api/clothes/try-on-with-clothes-id',
         formData,
         {
           headers: {

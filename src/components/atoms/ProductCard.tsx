@@ -70,7 +70,7 @@ export function ProductCard({ item }: ProductCardProps) {
           )}
           <CardMedia
             component="img"
-            image={imageUrl.startsWith('/') ? `http://5.129.196.187${imageUrl}` : imageUrl}
+            image={imageUrl.startsWith('/') ? `https://kingsman-tryon.ru${imageUrl}` : imageUrl}
                           alt={name}
             sx={{
               height: 250,
