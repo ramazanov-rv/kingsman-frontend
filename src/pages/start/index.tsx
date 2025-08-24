@@ -1,28 +1,28 @@
-import { Box, Button, Divider, Fade } from "@mui/material";
+import { Box, Button, Divider, Fade, Typography } from "@mui/material";
 import { useTelegram } from "../../hooks/useTelegram";
 import { useNavigate } from "react-router-dom";
 import { telegramVibrate } from "../../utils";
 import { useState, useEffect } from "react";
 
-export function HelloPage() {
+export function StartPage() {
   const { platform } = useTelegram();
   const navigate = useNavigate();
-  const [showLogo, setShowLogo] = useState(false);
   const [showButton, setShowButton] = useState(false);
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    const logoTimer = setTimeout(() => setShowLogo(true), 300);
+    const contentTimer = setTimeout(() => setShowContent(true), 300);
     const buttonTimer = setTimeout(() => setShowButton(true), 1000);
 
     return () => {
-      clearTimeout(logoTimer);
+      clearTimeout(contentTimer);
       clearTimeout(buttonTimer);
     };
   }, []);
 
   const handleClick = () => {
     telegramVibrate("light");
-    navigate("/start");
+    navigate("/catalog");
   };
 
   return (
@@ -37,25 +37,32 @@ export function HelloPage() {
         overflow: "hidden",
       }}
     >
-      <Fade in={showLogo} timeout={600}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
-        >
-          <Box
-            src="/logo-white.png"
-            component={"img"}
-            sx={{
-              height: "150px",
-              margin: "0 auto",
-              opacity: showLogo ? 1 : 0,
-              transition: "opacity 0.4s ease-in-out",
-            }}
-          />
+      <Box sx={{ position: 'absolute', top: 100, left: '50%', transform: 'translateX(-50%)' }}>
+        <img src="/smal-logo.svg" alt="Logo" style={{ width: 48, height: 48 }} />
+      </Box>
+      <Fade in={showContent} timeout={600}>
+        <Box sx={{ width: "100%" }}>
+          <Box sx={{ display: "grid", gap: "10px", paddingTop: "44px" }}>
+            <Typography
+              variant="h1"
+              fontWeight={590}
+              lineHeight={"122%"}
+              fontSize={19}
+              color="primary.main"
+            >
+              Добро пожаловать в мир стиля!
+            </Typography>
+            <Typography
+              variant="h2"
+              fontWeight={400}
+              lineHeight={"22px"}
+              fontSize={14}
+              color="primary.main"
+            >
+              Откройте для себя коллекцию модной одежды и создайте свой
+              неповторимый образ.
+            </Typography>
+          </Box>
         </Box>
       </Fade>
 
@@ -65,13 +72,13 @@ export function HelloPage() {
           bottom: 0,
           right: 0,
           left: 0,
-          backgroundColor: "primary.main",
+          backgroundColor: "secondary.main",
         }}
       >
         <Divider
           sx={{
             width: "100%",
-            backgroundColor: "white",
+            backgroundColor: "#1e244a29",
           }}
         />
         <Fade in={showButton} timeout={400}>
@@ -84,8 +91,8 @@ export function HelloPage() {
           >
             <Button
               sx={{
-                bgcolor: "white",
-                color: "primary.main",
+                bgcolor: "primary.main",
+                color: "white",
                 marginTop: "0px",
                 marginBottom:
                   platform === "ios" || platform === "android"
@@ -99,7 +106,7 @@ export function HelloPage() {
               }}
               onClick={handleClick}
             >
-              Далее
+              Продолжить
             </Button>
           </Box>
         </Fade>

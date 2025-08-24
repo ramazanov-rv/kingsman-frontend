@@ -34,6 +34,8 @@ export function Layout() {
         maxWidth: "500px",
         paddingInline: "20px",
         margin: "0 auto",
+        backgroundColor:
+          pathname === "/start" ? "secondary.main" : "primary.main",
       }}
     >
       <Outlet />

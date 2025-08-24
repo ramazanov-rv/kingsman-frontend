@@ -5,6 +5,7 @@ import { CatalogPage } from "./pages/catalog";
 import { FavoritesPage } from "./pages/favorites";
 import { ProductPage } from "./pages/catalog/[id]";
 import { TryOnPage } from "./pages/try-on";
+import { StartPage } from "./pages/start";
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <HelloPage />,
+      },
+      {
+        path: "/start",
+        element: <StartPage />,
       },
       {
         path: "/catalog",

@@ -15,27 +15,19 @@ import { useNavigate } from "react-router-dom";
 import { useFavorites } from "../../contexts/FavoritesContext";
 import { telegramVibrate } from "../../utils";
 
+import { ClothesItem } from "../../types/clothes";
+
 interface ProductCardProps {
-  id: string;
-  image: string;
-  title: string;
-  description: string;
-  price: number;
-  discount?: {
-    type: string;
-    value: number;
-    label: string;
-  };
+  item: ClothesItem;
 }
 
-export function ProductCard({
-  id,
-  image,
-  title,
-  description,
-  price,
-  discount,
-}: ProductCardProps) {
+export function ProductCard({ item }: ProductCardProps) {
+  const { id, attributes } = item;
+  const { name, description, price, discount, discountLabel, images } = attributes;
+  const defaultImage = '/catalog/jacket-1.jpeg';
+  const imageUrl = images?.data && Array.isArray(images.data) && images.data.length > 0 && images.data[0]?.attributes?.url
+    ? images.data[0].attributes.url
+    : defaultImage;
   const navigate = useNavigate();
   const { toggleFavorite, isFavorite } = useFavorites();
   const { ref, inView } = useInView({
@@ -52,19 +44,19 @@ export function ProductCard({
           display: "flex",
           flexDirection: "column",
           boxShadow: "none",
-          border: "1px solid #1e244a",
+          border: "1px solid #fff",
           backgroundColor: "#fff",
         }}
       >
         <Box sx={{ position: "relative" }}>
-          {discount && (
+          {(discount ?? 0) > 0 && (
             <Box
               sx={{
                 position: "absolute",
                 top: 8,
                 left: 8,
                 zIndex: 1,
-                backgroundColor: "#FF4081",
+                backgroundColor: "#9D4141",
                 color: "#fff",
                 py: 0.5,
                 px: 1,
@@ -73,13 +65,13 @@ export function ProductCard({
                 fontWeight: 600,
               }}
             >
-              -{discount.value}%
+              -{discount}%
             </Box>
           )}
           <CardMedia
             component="img"
-            image={image}
-            alt={title}
+            image={imageUrl.startsWith('/') ? `http://5.129.196.187${imageUrl}` : imageUrl}
+                          alt={name}
             sx={{
               height: 250,
               objectFit: "cover",
@@ -88,7 +80,7 @@ export function ProductCard({
           <IconButton
             onClick={() => {
               telegramVibrate("light");
-              toggleFavorite(id);
+              toggleFavorite(String(id));
             }}
             sx={{
               position: "absolute",
@@ -100,8 +92,8 @@ export function ProductCard({
               },
             }}
           >
-            {isFavorite(id) ? (
-              <FavoriteIcon sx={{ color: "#FF4081" }} />
+            {isFavorite(String(id)) ? (
+              <FavoriteIcon sx={{ color: "#9D4141" }} />
             ) : (
               <FavoriteBorderIcon sx={{ color: "#1e244a" }} />
             )}
@@ -124,9 +116,10 @@ export function ProductCard({
                 fontSize: 18,
                 fontWeight: 600,
                 mb: 0.5,
+                color: "primary.main",
               }}
             >
-              {title}
+              {name}
             </Typography>
             <Typography
               variant="body2"
@@ -148,7 +141,7 @@ export function ProductCard({
               gap: 2,
             }}
           >
-            {discount ? (
+            {(discount ?? 0) > 0 ? (
               <Box
                 sx={{
                   display: "flex",
@@ -166,7 +159,7 @@ export function ProductCard({
                   }}
                 >
                   {Math.round(
-                    price * (1 - discount.value / 100)
+                    price * (1 - (discount ?? 0) / 100)
                   ).toLocaleString()}{" "}
                   ₽
                 </Typography>
@@ -182,20 +175,22 @@ export function ProductCard({
                 >
                   {price.toLocaleString()} ₽
                 </Typography>
-                <Box
-                  sx={{
-                    backgroundColor: "#FF4081",
-                    color: "#fff",
-                    py: 0.5,
-                    px: 1,
-                    borderRadius: 1,
-                    fontSize: 14,
-                    fontWeight: 600,
-                    order: 3,
-                  }}
-                >
-                  -{discount.value}%
-                </Box>
+                {discountLabel && (
+                  <Box
+                    sx={{
+                      backgroundColor: "#9D4141",
+                      color: "#fff",
+                      py: 0.5,
+                      px: 1,
+                      borderRadius: 1,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      order: 3,
+                    }}
+                  >
+                    {discountLabel}
+                  </Box>
+                )}
               </Box>
             ) : (
               <Typography
@@ -220,8 +215,8 @@ export function ProductCard({
                 borderRadius: 2,
                 textTransform: "none",
                 px: 2,
-                backgroundColor: "secondary.main",
-                color: "primary.main",
+                backgroundColor: "primary.main",
+                color: "#fff",
                 "&:hover": {
                   backgroundColor: "secondary.main",
                   color: "primary.main",

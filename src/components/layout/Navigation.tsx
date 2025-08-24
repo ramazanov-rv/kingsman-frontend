@@ -14,10 +14,11 @@ export function Navigation() {
   const theme = useTheme();
   const { favorites } = useFavorites();
 
-  const { isCatalog, isFavorites } = useMemo(
+  const { isCatalog, isFavorites, isStart } = useMemo(
     () => ({
       isCatalog: location.pathname === "/catalog",
       isFavorites: location.pathname === "/favorites",
+      isStart: location.pathname === "/start",
     }),
     [location.pathname]
   );
@@ -28,7 +29,7 @@ export function Navigation() {
         label: "Каталог",
         icon: (
           <CheckroomIcon
-            sx={{ color: isCatalog ? "primary.main" : "inherit" }}
+            sx={{ color: 'secondary.main' }}
           />
         ),
         path: "/catalog",
@@ -52,7 +53,7 @@ export function Navigation() {
               },
             }}
           >
-            <FavoriteIcon sx={{ color: isFavorites ? "primary.main" : "inherit" }} />
+            <FavoriteIcon sx={{ color: 'secondary.main' }} />
           </Badge>
         ),
         path: "/favorites",
@@ -60,7 +61,7 @@ export function Navigation() {
       },
       {
         label: "Поддержка",
-        icon: <SupportAgentIcon sx={{ color: "inherit" }} />,
+        icon: <SupportAgentIcon sx={{ color: "secondary.main" }} />,
         path: "support",
         isSelected: false,
       },
@@ -81,6 +82,7 @@ export function Navigation() {
       {/* Blur layer */}
       <Box
         sx={{
+          display: isStart ? "none" : "block",
           width: "100%",
           position: "fixed",
           bottom: 0,
@@ -97,6 +99,7 @@ export function Navigation() {
       <Box
         component="nav"
         sx={{
+          display: isStart ? "none" : "block",
           width: "100%",
           position: "fixed",
           bottom: 0,
@@ -118,19 +121,18 @@ export function Navigation() {
       <Box
         component="nav"
         sx={{
+          display: isStart ? "none" : "flex",
           position: "fixed",
           bottom: 0,
           left: 0,
           right: 0,
           zIndex: 99999,
           height: "110px",
-          display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           px: 2,
           pb: "calc(var(--tg-safe-area-inset-bottom) + 10px)",
-          pt: 2,
-          background: "transparent",
+          background: "#1e2449e0",
           transition: "transform 0.3s ease-in-out",
         }}
       >
@@ -164,9 +166,9 @@ export function Navigation() {
                 right: 0,
                 bottom: 0,
                 background:
-                  theme.palette.mode === "dark"
-                    ? "rgba(255, 255, 255, 0.05)"
-                    : "rgba(0, 0, 0, 0.05)",
+                    theme.palette.mode === "dark"
+                      ? "rgba(255, 255, 255, 0.05)"
+                      : "rgba(0, 0, 0, 0.05)",
                 borderRadius: "0px",
                 opacity: link.isSelected ? 1 : 0,
                 transform: link.isSelected ? "scale(1)" : "scale(0.8)",
@@ -213,10 +215,8 @@ export function Navigation() {
               sx={{
                 fontSize: "11px",
                 color: link.isSelected
-                  ? "primary.main"
-                  : theme.palette.mode === "dark"
-                  ? "rgba(235, 235, 245, 0.6)"
-                  : "rgba(0, 0, 0, 0.6)",
+                  ? "secondary.main"
+                  : "white",
                 transition: "color 0.2s ease-in-out",
                 fontWeight: link.isSelected ? 500 : 400,
                 display: "block",

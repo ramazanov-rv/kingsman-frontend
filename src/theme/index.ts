@@ -13,7 +13,7 @@ export const theme = createTheme({
       default: "#ffffff",
     },
     text: {
-      primary: "#1e244a",
+      primary: "#fff",
       secondary: "#dad6d1",
     },
   },
@@ -21,6 +21,13 @@ export const theme = createTheme({
     fontFamily: '"Montserrat", sans-serif',
   },
   components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: "#fff",
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: "contained",

@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
+  CircularProgress,
   Fade,
   Typography,
   Container,
@@ -14,10 +15,11 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { sampleProducts } from "./index";
 import { useEffect, useState } from "react";
 import { useTelegram } from "../../hooks/useTelegram";
 import { isMobileWebApp, telegramVibrate } from "../../utils";
+import { getClothesById } from "../../services/clothes";
+import { ClothesItem } from "../../types/clothes";
 
 const pulse = keyframes`
   0% {
@@ -50,8 +52,25 @@ export function ProductPage() {
   const { tg } = useTelegram();
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = sampleProducts.find((p) => p.id === id);
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState<ClothesItem | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        if (!id) return;
+        const response = await getClothesById(Number(id));
+        setProduct(response.data);
+      } catch (error) {
+        console.error('Failed to fetch product:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
 
   useEffect(() => {
     tg.BackButton.show();
@@ -65,9 +84,17 @@ export function ProductPage() {
     };
   }, [tg, navigate]);
 
+  if (loading) {
+    return (
+      <Box sx={{ pt: 4, textAlign: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   if (!product) {
     return (
-      <Box sx={{ mt: 4, textAlign: "center" }}>
+      <Box sx={{ pt: 4, textAlign: "center" }}>
         <Typography variant="h5" color="error">
           Товар не найден
         </Typography>
@@ -85,18 +112,26 @@ export function ProductPage() {
     );
   }
 
-  const images = [product.image, product.image, product.image];
+  const { attributes } = product;
+  const { name, description, price, discount, discountLabel, images, availableSizes } = attributes;
+  const defaultImage = '/catalog/jacket-1.jpeg';
+  const imageUrls = images?.data && Array.isArray(images.data) && images.data.length > 0
+    ? images.data.map(img => {
+        const url = img?.attributes?.url;
+        return url ? `http://5.129.196.187${url}` : defaultImage;
+      })
+    : [defaultImage];
 
   return (
     <Fade in timeout={400}>
       <Container
         maxWidth="lg"
-        sx={{ mt: { xs: isMobileWebApp ? 14 : "20px", sm: 4 }, pb: 18 }}
+        sx={{ pt: { xs: isMobileWebApp ? 14 : "20px", sm: 4 }, pb: 18 }}
       >
         <Box
           sx={{
             display: "grid",
-            gap: 4,
+            gap: 2,
             gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
           }}
         >
@@ -124,6 +159,8 @@ export function ProductPage() {
                   height: "32px",
                   backgroundColor: "secondary.main",
                   borderRadius: "50%",
+                  top: "50%",
+                  transform: "translateY(-50%)",
                   "&:hover": {
                     backgroundColor: "secondary.main",
                     opacity: 0.9,
@@ -144,7 +181,7 @@ export function ProductPage() {
                 loop
                 style={
                   {
-                    "--swiper-pagination-color": "#1e244a",
+                    "--swiper-pagination-color": "#dad6d1",
                     "--swiper-navigation-color": "#1e244a",
                     "--swiper-navigation-size": "16px",
                     "--swiper-navigation-sides-offset": "10px",
@@ -155,13 +192,14 @@ export function ProductPage() {
                   } as any
                 }
               >
-                {images.map((img, index) => (
+                {imageUrls.map((img, index) => (
                   <SwiperSlide key={index}>
                     <Box
                       component="img"
                       src={img}
-                      alt={`${product.title} - изображение ${index + 1}`}
+                      alt={`${name} - изображение ${index + 1}`}
                       sx={{
+                        borderRadius: 1,
                         width: "100%",
                         height: { xs: 300, sm: 400, md: 500 },
                         objectFit: "cover",
@@ -179,22 +217,20 @@ export function ProductPage() {
               sx={{
                 fontSize: { xs: 24, sm: 32 },
                 fontWeight: 600,
-                color: "primary.main",
                 lineHeight: 1.1,
               }}
             >
-              {product.title}
+              {name}
             </Typography>
 
             <Typography
               sx={{
                 fontSize: { xs: 14, sm: 18 },
-                color: "primary.main",
                 opacity: 0.8,
                 lineHeight: 1.1,
               }}
             >
-              {product.description}
+              {description}
             </Typography>
 
             {/* Размеры */}
@@ -202,7 +238,6 @@ export function ProductPage() {
               <Typography
                 sx={{
                   fontSize: 14,
-                  color: "primary.main",
                   mb: 1,
                   fontWeight: 500,
                 }}
@@ -210,16 +245,17 @@ export function ProductPage() {
                 Размеры
               </Typography>
               <Box sx={{ display: "flex", gap: 1 }}>
-                {product.sizes?.map((size: string) => {
-                  const isAvailable = product.availableSizes?.includes(size);
+                {(availableSizes || []).map((size: string) => {
+                  const isAvailable = true;
                   const isSelected = selectedSize === size;
 
                   return (
                     <Box
                       key={size}
                       onClick={() => {
-                        telegramVibrate("light")
-                        isAvailable && setSelectedSize(isSelected ? null : size);
+                        telegramVibrate("light");
+                        isAvailable &&
+                          setSelectedSize(isSelected ? null : size);
                       }}
                       sx={{
                         width: 36,
@@ -229,17 +265,21 @@ export function ProductPage() {
                         justifyContent: "center",
                         border: "1px solid",
                         borderColor: isSelected
-                          ? "primary.main"
-                          : "primary.main",
+                          ? "secondary.main"
+                          : "secondary.main",
                         borderRadius: 1,
                         fontSize: 14,
                         fontWeight: 500,
-                        color: isSelected ? "#fff" : "primary.main",
+                        color: isSelected
+                          ? "primary.main"
+                          : !isAvailable
+                          ? "secondary.main"
+                          : "secondary.main",
                         opacity: isAvailable ? 1 : 0.3,
                         backgroundColor: isSelected
-                          ? "primary.main"
-                          : isAvailable
                           ? "secondary.main"
+                          : isAvailable
+                          ? "primary.main"
                           : "transparent",
                         cursor: isAvailable ? "pointer" : "default",
                         transition: "all 0.2s ease",
@@ -267,7 +307,7 @@ export function ProductPage() {
               }}
             >
               <Box sx={{ mb: 2 }}>
-                {product.discount ? (
+                {(discount ?? 0) > 0 ? (
                   <>
                     <Box
                       sx={{
@@ -281,13 +321,12 @@ export function ProductPage() {
                         sx={{
                           fontSize: { xs: 24, sm: 26 },
                           fontWeight: 700,
-                          color: "primary.main",
                           display: "flex",
                           alignItems: "center",
                         }}
                       >
                         {Math.round(
-                          product.price * (1 - product.discount.value / 100)
+                          price * (1 - (discount ?? 0) / 100)
                         ).toLocaleString()}{" "}
                         ₽
                       </Typography>
@@ -295,16 +334,15 @@ export function ProductPage() {
                         sx={{
                           fontSize: { xs: 16, sm: 18 },
                           fontWeight: 500,
-                          color: "primary.main",
                           opacity: 0.5,
                           textDecoration: "line-through",
                         }}
                       >
-                        {product.price.toLocaleString()} ₽
+                        {price.toLocaleString()} ₽
                       </Typography>
                       <Box
                         sx={{
-                          backgroundColor: "#FF4081",
+                          backgroundColor: "#9D4141",
                           color: "#fff",
                           py: 0.5,
                           px: 1,
@@ -315,7 +353,7 @@ export function ProductPage() {
                           alignItems: "center",
                         }}
                       >
-                        -{product.discount.value}%
+                        -{discount}%
                       </Box>
                     </Box>
                     <Typography
@@ -328,7 +366,7 @@ export function ProductPage() {
                         gap: 1,
                       }}
                     >
-                      {product.discount.label}
+                      {discountLabel}
                     </Typography>
                   </>
                 ) : (
@@ -340,7 +378,7 @@ export function ProductPage() {
                       color: "primary.main",
                     }}
                   >
-                    {product.price.toLocaleString()} ₽
+                    {price.toLocaleString()} ₽
                   </Typography>
                 )}
               </Box>
@@ -360,7 +398,7 @@ export function ProductPage() {
                     if (selectedSize) {
                       telegramVibrate("light");
                       alert(
-                        `Товар ${product.title} размера ${selectedSize} добавлен в корзину`
+                        `Товар ${name} размера ${selectedSize} добавлен в корзину`
                       );
                     }
                   }}
@@ -368,15 +406,15 @@ export function ProductPage() {
                     py: 1.5,
                     borderRadius: 2,
                     textTransform: "none",
-                    backgroundColor: "primary.main",
-                    color: "#fff",
+                    backgroundColor: "#fff",
+                    color: "primary.main",
                     "&:hover": {
-                      backgroundColor: "primary.main",
+                      backgroundColor: "#fff",
                       opacity: 0.9,
                     },
                     "&.Mui-disabled": {
-                      backgroundColor: "rgba(30, 36, 74, 0.12)",
-                      color: "rgba(30, 36, 74, 0.26)",
+                      backgroundColor: "rgba(255, 255, 255, 0.12)",
+                      color: "rgba(255, 255, 255, 0.26)",
                     },
                   }}
                 >
