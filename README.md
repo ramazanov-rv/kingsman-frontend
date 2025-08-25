@@ -1,46 +1,155 @@
-# Getting Started with Create React App
+# 🛍️ Mr.Kingsman Virtual Fitting Room
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![TOOBA Logo](/public/logo.png)
 
-## Available Scripts
+TOOBA - это инновационное Telegram веб-приложение для бренда Mr.Kingsman, которое переносит премиальный опыт выбора мужской одежды в цифровое пространство. Приложение предоставляет уникальную возможность виртуальной примерки костюмов и других элементов гардероба из коллекций Mr.Kingsman с помощью технологий искусственного интеллекта.
 
-In the project directory, you can run:
+## ✨ Основные возможности
 
-### `npm start`
+- 🤖 **AI Виртуальная примерка** - Революционная технология для примерки костюмов Mr.Kingsman
+- 🎩 **Премиальный каталог** - Полный ассортимент костюмов, пиджаков и аксессуаров Mr.Kingsman
+- 📱 **Интеграция с Telegram** - Удобное веб-приложение внутри Telegram
+- ❤️ **Избранное** - Сохранение понравившихся моделей
+- 💳 **Безопасная оплата** - Интеграция с платежной системой ЮKassa
+- 👔 **Персонализация** - Индивидуальный подход к каждому клиенту
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 🎯 О Mr.Kingsman
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Mr.Kingsman - это премиальный бренд мужской одежды, специализирующийся на создании элегантных костюмов и классической мужской одежды высочайшего качества. Наше приложение создано для того, чтобы сделать процесс выбора и покупки одежды Mr.Kingsman максимально удобным и технологичным.
 
-### `npm test`
+## 🚀 Быстрый старт
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Предварительные требования
 
-### `npm run build`
+- Node.js (версия 16.x или выше)
+- npm (версия 8.x или выше)
+- Telegram аккаунт для тестирования
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Установка
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Клонируйте репозиторий:
+\`\`\`bash
+git clone [URL вашего репозитория]
+cd frontend
+\`\`\`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. Установите зависимости:
+\`\`\`bash
+npm install
+\`\`\`
 
-### `npm run eject`
+3. Создайте файл .env в корневой директории проекта:
+\`\`\`env
+REACT_APP_API_URL=your_backend_api_url
+REACT_APP_TELEGRAM_BOT_USERNAME=your_bot_username
+\`\`\`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Запуск приложения
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Для запуска в режиме разработки:
+\`\`\`bash
+npm start
+\`\`\`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Приложение будет доступно по адресу [http://localhost:3000](http://localhost:3000)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Для сборки продакшн версии:
+\`\`\`bash
+npm run build
+\`\`\`
 
-## Learn More
+## 🛠️ Технологический стек
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Frontend Framework**: React 18
+- **Type Safety**: TypeScript
+- **Styling**: Material-UI (MUI)
+- **State Management**: React Context
+- **Routing**: React Router DOM
+- **HTTP Client**: Axios
+- **Payment Integration**: ЮKassa
+- **UI Components**: 
+  - Swiper для карусели товаров
+  - Canvas Confetti для анимаций
+  - React Intersection Observer для бесконечной прокрутки
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📱 Структура проекта
+
+\`\`\`
+frontend/
+├── src/
+│   ├── components/     # Переиспользуемые компоненты
+│   │   ├── atoms/     # Базовые компоненты (ProductCard и др.)
+│   │   └── layout/    # Компоненты макета
+│   ├── contexts/      # React контексты (избранное и др.)
+│   ├── hooks/         # Кастомные хуки
+│   ├── pages/         # Страницы приложения
+│   │   ├── catalog/   # Каталог товаров
+│   │   ├── try-on/    # Виртуальная примерка
+│   │   └── favorites/ # Избранные товары
+│   ├── services/      # API сервисы
+│   ├── theme/         # Настройки темы MUI
+│   ├── types/         # TypeScript типы
+│   └── utils/         # Вспомогательные функции
+\`\`\`
+
+## 🔧 Конфигурация
+
+### Telegram WebApp
+
+1. Создайте бота через [@BotFather](https://t.me/botfather)
+2. Настройте веб-приложение для бота
+3. Добавьте URL вашего приложения в настройках бота
+
+### Админ-панель Mr.Kingsman
+
+Админ-панель предоставляет следующие возможности:
+- Управление каталогом товаров
+- Загрузка новых коллекций
+- Настройка цен и скидок
+- Просмотр статистики примерок
+- Управление заказами
+
+## 🎭 AI Примерка
+
+Наша система виртуальной примерки использует передовые технологии компьютерного зрения и искусственного интеллекта для создания реалистичной визуализации одежды на фотографии клиента. 
+
+Процесс работы:
+1. Загрузка фотографии пользователя
+2. AI анализ пропорций и размеров
+3. Наложение выбранной модели одежды
+4. Корректировка посадки и драпировки
+5. Визуализация результата
+
+## 📄 API Документация
+
+Основные эндпоинты:
+
+- `/api/catalog` - Каталог коллекций Mr.Kingsman
+- `/api/products/:id` - Детальная информация о товаре
+- `/api/favorites` - Управление избранным
+- `/api/try-on` - AI примерка
+- `/api/payment` - Интеграция с ЮKassa
+
+## 🤝 Вклад в проект
+
+Мы приветствуем вклад в развитие проекта! Пожалуйста, ознакомьтесь с нашими правилами для контрибьюторов перед созданием pull request.
+
+## 📝 Лицензия
+
+Этот проект распространяется под лицензией [укажите тип лицензии]
+
+## 👥 Команда
+
+- [Рамазанов Рамазан] - FullStack Developer
+- [Гаджиев Важид] - ML-Engineer
+- [Юнусов Омар] - Backend-Developer
+
+## 📞 Контакты
+
+Для вопросов и предложений:
+- Telegram: [@ramazanov_rv]
+- Email: [info@ramazanov-studio.ru]
+
+---
+
+Разработано с ❤️ для Mr.Kingsman
