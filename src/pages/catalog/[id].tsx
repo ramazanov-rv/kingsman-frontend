@@ -279,8 +279,13 @@ export function ProductPage() {
                 Размеры
               </Typography>
               <Box sx={{ display: "flex", gap: 1 }}>
-                {(availableSizes || []).map((size: string) => {
-                  const isAvailable = true;
+                {[...(availableSizes || []), ...(attributes.unavailableSizes || [])]
+                  .sort((a, b) => {
+                    const sizeOrder = { XS: 1, S: 2, M: 3, L: 4, XL: 5, XXL: 6 };
+                    return (sizeOrder[a as keyof typeof sizeOrder] || 99) - (sizeOrder[b as keyof typeof sizeOrder] || 99);
+                  })
+                  .map((size: string) => {
+                  const isAvailable = availableSizes?.includes(size) ?? false;
                   const isSelected = selectedSize === size;
 
                   return (
