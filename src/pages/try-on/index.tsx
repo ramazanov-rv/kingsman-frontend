@@ -48,7 +48,6 @@ export const TryOnPage = () => {
       setGeneratedImage(data.data.generatedImageUrl);
       telegramVibrate("light");
       
-      // Запускаем конфетти
       confetti({
         particleCount: 100,
         spread: 70,
@@ -58,7 +57,6 @@ export const TryOnPage = () => {
     },
     onError: (error) => {
       console.error('Error processing image:', error);
-      // Здесь можно добавить обработку ошибок, например показ уведомления
     },
   });
 
@@ -82,7 +80,6 @@ export const TryOnPage = () => {
   const handleSaveImage = () => {
     if (!generatedImage) return;
     
-    // Используем Telegram Mini App API для сохранения изображения
     tg.showPopup({
       title: "Сохранить изображение",
       message: "Хотите сохранить сгенерированное изображение?",
@@ -184,7 +181,7 @@ export const TryOnPage = () => {
                   },
                 }}
               >
-                Выбрать другое фото
+                Выбрать фото
               </Button>
               {generatedImage && (
                 <Button
@@ -198,7 +195,7 @@ export const TryOnPage = () => {
                     },
                   }}
                 >
-                  Сохранить изображение
+                  Сохранить
                 </Button>
               )}
             </Box>
