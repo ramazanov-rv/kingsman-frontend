@@ -162,7 +162,11 @@ export function ProductPage() {
     <Fade in timeout={400}>
       <Container
         maxWidth="lg"
-        sx={{ pt: { xs: isMobileWebApp ? 14 : "20px", sm: 4 }, pb: 18, paddingInline: '0 !important' }}
+        sx={{
+          pt: { xs: isMobileWebApp ? 14 : "20px", sm: 4 },
+          pb: 18,
+          paddingInline: "0 !important",
+        }}
       >
         <Box
           sx={{
@@ -410,30 +414,32 @@ export function ProductPage() {
                         -{discount}%
                       </Box>
                     </Box>
-                    <Box
-                      sx={{
-                        bgcolor: "#9D4141",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        maxWidth: "fit-content",
-                        borderRadius: 1,
-                      }}
-                    >
-                      <Typography
+                    {discountLabel && discountLabel !== "" && (
+                      <Box
                         sx={{
-                          fontSize: 14,
-                          color: "#fff",
-                          padding: "4px 8px",
-                          fontWeight: 500,
+                          bgcolor: "#9D4141",
                           display: "flex",
                           alignItems: "center",
-                          gap: 1,
+                          justifyContent: "center",
+                          maxWidth: "fit-content",
+                          borderRadius: 1,
                         }}
                       >
-                        {discountLabel}
-                      </Typography>
-                    </Box>
+                        <Typography
+                          sx={{
+                            fontSize: 14,
+                            color: "#fff",
+                            padding: "4px 8px",
+                            fontWeight: 500,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                          }}
+                        >
+                          {discountLabel}
+                        </Typography>
+                      </Box>
+                    )}
                   </>
                 ) : (
                   <Typography
