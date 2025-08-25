@@ -126,7 +126,7 @@ export function ProductCard({ item }: ProductCardProps) {
               color="primary.main"
               sx={{
                 opacity: 0.8,
-                fontSize: 16,
+                fontSize: 14.5,
               }}
             >
               {description}
