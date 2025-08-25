@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api } from "../api";
 
 interface Order {
   user_id: number;
@@ -10,9 +10,6 @@ interface Order {
 }
 
 export async function createOrder(order: Order) {
-  const response = await axios.post(
-    "http://109.196.98.31:5000/api/create-order",
-    order
-  );
+  const response = await api.post("/create-order", order);
   return response.data;
 }
