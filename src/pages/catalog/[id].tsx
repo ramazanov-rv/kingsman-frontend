@@ -101,17 +101,19 @@ export function ProductPage() {
 
   if (loading) {
     return (
-      <Box sx={{ 
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        bgcolor: "rgba(0, 0, 0, 0.2)"
-      }}>
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          bgcolor: "rgba(0, 0, 0, 0.2)",
+        }}
+      >
         <CircularProgress sx={{ color: "#fff" }} />
       </Box>
     );
@@ -279,61 +281,74 @@ export function ProductPage() {
                 Размеры
               </Typography>
               <Box sx={{ display: "flex", gap: 1 }}>
-                {[...(availableSizes || []), ...(attributes.unavailableSizes || [])]
+                {[
+                  ...(availableSizes || []),
+                  ...(attributes.unavailableSizes || []),
+                ]
                   .sort((a, b) => {
-                    const sizeOrder = { XS: 1, S: 2, M: 3, L: 4, XL: 5, XXL: 6 };
-                    return (sizeOrder[a as keyof typeof sizeOrder] || 99) - (sizeOrder[b as keyof typeof sizeOrder] || 99);
+                    const sizeOrder = {
+                      XS: 1,
+                      S: 2,
+                      M: 3,
+                      L: 4,
+                      XL: 5,
+                      XXL: 6,
+                    };
+                    return (
+                      (sizeOrder[a as keyof typeof sizeOrder] || 99) -
+                      (sizeOrder[b as keyof typeof sizeOrder] || 99)
+                    );
                   })
                   .map((size: string) => {
-                  const isAvailable = availableSizes?.includes(size) ?? false;
-                  const isSelected = selectedSize === size;
+                    const isAvailable = availableSizes?.includes(size) ?? false;
+                    const isSelected = selectedSize === size;
 
-                  return (
-                    <Box
-                      key={size}
-                      onClick={() => {
-                        telegramVibrate("light");
-                        isAvailable &&
-                          setSelectedSize(isSelected ? null : size);
-                      }}
-                      sx={{
-                        width: 36,
-                        height: 36,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        border: "1px solid",
-                        borderColor: isSelected
-                          ? "secondary.main"
-                          : "secondary.main",
-                        borderRadius: 1,
-                        fontSize: 14,
-                        fontWeight: 500,
-                        color: isSelected
-                          ? "primary.main"
-                          : !isAvailable
-                          ? "secondary.main"
-                          : "secondary.main",
-                        opacity: isAvailable ? 1 : 0.3,
-                        backgroundColor: isSelected
-                          ? "secondary.main"
-                          : isAvailable
-                          ? "primary.main"
-                          : "transparent",
-                        cursor: isAvailable ? "pointer" : "default",
-                        transition: "all 0.2s ease",
-                        "&:hover": isAvailable
-                          ? {
-                              opacity: 0.9,
-                              transform: "scale(1.05)",
-                            }
-                          : {},
-                      }}
-                    >
-                      {size}
-                    </Box>
-                  );
-                })}
+                    return (
+                      <Box
+                        key={size}
+                        onClick={() => {
+                          telegramVibrate("light");
+                          isAvailable &&
+                            setSelectedSize(isSelected ? null : size);
+                        }}
+                        sx={{
+                          width: 36,
+                          height: 36,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          border: "1px solid",
+                          borderColor: isSelected
+                            ? "secondary.main"
+                            : "secondary.main",
+                          borderRadius: 1,
+                          fontSize: 14,
+                          fontWeight: 500,
+                          color: isSelected
+                            ? "primary.main"
+                            : !isAvailable
+                            ? "secondary.main"
+                            : "secondary.main",
+                          opacity: isAvailable ? 1 : 0.3,
+                          backgroundColor: isSelected
+                            ? "secondary.main"
+                            : isAvailable
+                            ? "primary.main"
+                            : "transparent",
+                          cursor: isAvailable ? "pointer" : "default",
+                          transition: "all 0.2s ease",
+                          "&:hover": isAvailable
+                            ? {
+                                opacity: 0.9,
+                                transform: "scale(1.05)",
+                              }
+                            : {},
+                        }}
+                      >
+                        {size}
+                      </Box>
+                    );
+                  })}
               </Box>
             </Box>
 
@@ -395,18 +410,30 @@ export function ProductPage() {
                         -{discount}%
                       </Box>
                     </Box>
-                    <Typography
+                    <Box
                       sx={{
-                        fontSize: 14,
-                        color: "#FF4081",
-                        fontWeight: 500,
+                        bgcolor: "#9D4141",
                         display: "flex",
                         alignItems: "center",
-                        gap: 1,
+                        justifyContent: "center",
+                        maxWidth: "fit-content",
+                        borderRadius: 1,
                       }}
                     >
-                      {discountLabel}
-                    </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          color: "#fff",
+                          padding: "4px 8px",
+                          fontWeight: 500,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                        }}
+                      >
+                        {discountLabel}
+                      </Typography>
+                    </Box>
                   </>
                 ) : (
                   <Typography
@@ -464,7 +491,10 @@ export function ProductPage() {
                   }}
                 >
                   {isCreatingOrder ? (
-                    <CircularProgress size={22} sx={{ color: "primary.main" }} />
+                    <CircularProgress
+                      size={22}
+                      sx={{ color: "primary.main" }}
+                    />
                   ) : selectedSize ? (
                     "Заказать"
                   ) : (
