@@ -60,6 +60,7 @@ npm run build
 - **State Management**: React Context
 - **Routing**: React Router DOM
 - **HTTP Client**: Axios
+- **Data Fetching**: React Query
 - **Payment Integration**: ЮKassa
 - **UI Components**: 
   - Swiper для карусели товаров
@@ -71,7 +72,7 @@ npm run build
 ```
 frontend/
 ├── src/
-│   ├── components/     # Переиспользуемые компоненты
+│   ├── components/    # Переиспользуемые компоненты
 │   │   ├── atoms/     # Базовые компоненты (ProductCard и др.)
 │   │   └── layout/    # Компоненты макета
 │   ├── contexts/      # React контексты (избранное и др.)
