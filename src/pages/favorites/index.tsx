@@ -64,8 +64,18 @@ export function FavoritesPage() {
         </Typography>
 
         {loading ? (
-          <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
-            <CircularProgress />
+          <Box sx={{ 
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            bgcolor: "rgba(0, 0, 0, 0.2)"
+          }}>
+            <CircularProgress sx={{ color: '#fff' }} />
           </Box>
         ) : favoriteProducts.length === 0 ? (
           <Box sx={{ textAlign: "center", py: 8 }}>

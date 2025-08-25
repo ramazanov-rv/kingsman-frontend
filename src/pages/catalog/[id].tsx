@@ -20,6 +20,8 @@ import { useTelegram } from "../../hooks/useTelegram";
 import { isMobileWebApp, telegramVibrate } from "../../utils";
 import { getClothesById } from "../../services/clothes";
 import { ClothesItem } from "../../types/clothes";
+import { useMutation } from "@tanstack/react-query";
+import { createOrder } from "../../services/order";
 
 const pulse = keyframes`
   0% {
@@ -56,6 +58,19 @@ export function ProductPage() {
   const [product, setProduct] = useState<ClothesItem | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
+  const { mutate: createOrderMutation, isPending: isCreatingOrder } =
+    useMutation({
+      mutationFn: createOrder,
+      onSuccess: () => {
+        telegramVibrate("rigid");
+        tg.close();
+      },
+      onError: () => {
+        telegramVibrate("heavy");
+        alert("Ошибка при создании заказа");
+      },
+    });
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -63,7 +78,7 @@ export function ProductPage() {
         const response = await getClothesById(Number(id));
         setProduct(response.data);
       } catch (error) {
-        console.error('Failed to fetch product:', error);
+        console.error("Failed to fetch product:", error);
       } finally {
         setLoading(false);
       }
@@ -86,8 +101,18 @@ export function ProductPage() {
 
   if (loading) {
     return (
-      <Box sx={{ pt: 4, textAlign: "center" }}>
-        <CircularProgress />
+      <Box sx={{ 
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        bgcolor: "rgba(0, 0, 0, 0.2)"
+      }}>
+        <CircularProgress sx={{ color: "#fff" }} />
       </Box>
     );
   }
@@ -113,14 +138,23 @@ export function ProductPage() {
   }
 
   const { attributes } = product;
-  const { name, description, price, discount, discountLabel, images, availableSizes } = attributes;
-  const defaultImage = '/catalog/jacket-1.jpeg';
-  const imageUrls = images?.data && Array.isArray(images.data) && images.data.length > 0
-    ? images.data.map(img => {
-        const url = img?.attributes?.url;
-        return url ? `https://kingsman-tryon.ru${url}` : defaultImage;
-      })
-    : [defaultImage];
+  const {
+    name,
+    description,
+    price,
+    discount,
+    discountLabel,
+    images,
+    availableSizes,
+  } = attributes;
+  const defaultImage = "/catalog/jacket-1.jpeg";
+  const imageUrls =
+    images?.data && Array.isArray(images.data) && images.data.length > 0
+      ? images.data.map((img) => {
+          const url = img?.attributes?.url;
+          return url ? `https://kingsman-tryon.ru${url}` : defaultImage;
+        })
+      : [defaultImage];
 
   return (
     <Fade in timeout={400}>
@@ -397,12 +431,18 @@ export function ProductPage() {
                   onClick={() => {
                     if (selectedSize) {
                       telegramVibrate("light");
-                      alert(
-                        `Товар ${name} размера ${selectedSize} добавлен в корзину`
-                      );
+                      createOrderMutation({
+                        amount: price,
+                        product_name: name,
+                        size: selectedSize,
+                        color: " ",
+                        quantity: 1,
+                        user_id: tg.initDataUnsafe.user?.id ?? 0,
+                      });
                     }
                   }}
                   sx={{
+                    height: "50px",
                     py: 1.5,
                     borderRadius: 2,
                     textTransform: "none",
@@ -418,7 +458,13 @@ export function ProductPage() {
                     },
                   }}
                 >
-                  {selectedSize ? "Заказать" : "Выберите размер"}
+                  {isCreatingOrder ? (
+                    <CircularProgress size={22} sx={{ color: "primary.main" }} />
+                  ) : selectedSize ? (
+                    "Заказать"
+                  ) : (
+                    "Выберите размер"
+                  )}
                 </Button>
 
                 <Button
