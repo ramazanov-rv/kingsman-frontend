@@ -162,7 +162,7 @@ export function ProductPage() {
     <Fade in timeout={400}>
       <Container
         maxWidth="lg"
-        sx={{ pt: { xs: isMobileWebApp ? 14 : "20px", sm: 4 }, pb: 18 }}
+        sx={{ pt: { xs: isMobileWebApp ? 14 : "20px", sm: 4 }, pb: 18, paddingInline: '0 !important' }}
       >
         <Box
           sx={{

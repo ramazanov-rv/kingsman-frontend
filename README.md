@@ -1,4 +1,4 @@
-# 🛍️ .Kingsman Virtual Fitting Room
+# 🛍️ Mr.Kingsman Virtual Fitting Room
 
 ![Mr.Kingsman Logo](/public/logo.png)
 

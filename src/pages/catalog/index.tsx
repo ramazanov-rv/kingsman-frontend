@@ -28,7 +28,7 @@ export function CatalogPage() {
 
   return (
     <Fade in timeout={400}>
-      <Box sx={{ pt: isMobileWebApp ? "120px" : "30px", px: 2, pb: "150px" }}>
+      <Box sx={{ pt: isMobileWebApp ? "120px" : "30px", pb: "150px" }}>
         <Typography
           sx={{
             variant: "h1",
